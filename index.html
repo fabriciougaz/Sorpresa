@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feliz Aniversario Mi Amor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            background-color: black;
+            color: white;
+        }
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><defs><pattern id="stars" patternUnits="userSpaceOnUse" width="100" height="100"><circle cx="50" cy="50" r="2" fill="white" opacity="0.8"/></pattern></defs><rect width="100%" height="100%" fill="black"/><rect width="100%" height="100%" fill="url(%23stars)"/></svg>');
+            z-index: -2;
+        }
+        .heart-overlay, .rose-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+        }
+        .heart, .rose-petal, .heart-red, .rose-red {
+            position: absolute;
+            pointer-events: none;
+            animation: fall linear forwards;
+        }
+        .heart {
+            width: 20px;
+            height: 20px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23FF69B4"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>') no-repeat center/contain;
+        }
+        .rose-petal {
+            width: 30px;
+            height: 30px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23FF0000"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>') no-repeat center/contain;
+            opacity: 0.7;
+            transform: rotate(45deg);
+        }
+        /* Corazones rojos */
+        .heart-red {
+            width: 30px;
+            height: 30px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23FF0000"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>') no-repeat center/contain;
+        }
+        /* Rosas rojas */
+        .rose-red {
+            width: 30px;
+            height: 30px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23FF0000"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>') no-repeat center/contain;
+            opacity: 0.7;
+            transform: rotate(45deg);
+        }
+        @keyframes fall {
+            0% {
+                transform: translateY(-100px);
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+        .container {
+            position: relative;
+            max-width: 800px;
+            margin: 40px auto;
+            background: rgba(50, 50, 50, 0.8);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 15px 30px rgba(255,255,255,0.1);
+            z-index: 10;
+        }
+        .love-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .love-button {
+            padding: 15px 30px;
+            background-color: #FF69B4;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        .love-button:hover {
+            transform: scale(1.1) rotate(5deg);
+            background-color: #FF1493;
+        }
+        .love-button::before {
+            content: '❤️';
+            position: absolute;
+            top: -100%;
+            left: 50%;
+            transform: translateX(-50%);
+            transition: top 0.3s ease;
+            opacity: 0;
+        }
+        .love-button:hover::before {
+            top: 50%;
+            opacity: 1;
+        }
+        .love-images {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        .love-image {
+            max-width: 200px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(255,255,255,0.2);
+            transition: transform 0.3s ease;
+            width: 100%;
+        }
+        .love-image:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            color: #FF1493;
+            text-align: center;
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px #FF1493;
+        }
+        .romantic-message {
+            text-align: center;
+            font-size: 1.2em;
+            color: #ddd;
+            margin: 20px 0;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.8);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: rgba(30,30,30,0.9);
+            margin: 15% auto;
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 600px;
+            width: 80%;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 4px 6px rgba(255,255,255,0.1);
+            color: white;
+            border: 2px solid #FF1493;
+        }
+        .close {
+            color: #aaa;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close:hover {
+            color: #FF1493;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5em;
+            }
+            .container {
+                padding: 20px;
+            }
+            .love-button {
+                padding: 12px 24px;
+                font-size: 0.9em;
+            }
+            .love-image {
+                max-width: 45%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2em;
+            }
+            .love-image {
+                max-width: 80%;
+            }
+            .love-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            .love-button {
+                width: 100%;
+                padding: 15px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background"></div>
+    <div class="heart-overlay" id="heart-overlay"></div>
+    <div class="rose-overlay" id="rose-overlay"></div>
+
+    <div class="container">
+        <h1>Feliz Aniversario Mi Amor</h1>
+        <div class="romantic-message">
+            <p>Feliz aniversario mi amor espero te guste tu detalle, espero recuerdes que al principio te mandaba corazones de puro codigo que
+                es mi carrera que estudio pues ahora esta es tu sorpresa mi amor, te amo con todo mi corazon mi vida💘
+            </p>
+        </div>
+
+        <div class="love-buttons">
+            <div class="love-button" onclick="openModal('carta1')">💌 Carta de Amor 1</div>
+            <div class="love-button" onclick="openModal('carta2')">💕 Carta de Amor 2</div>
+            <div class="love-button" onclick="openModal('carta3')">💘 Carta de Amor 3</div>
+            <div class="love-button" onclick="openModal('carta4')">🌹 Poema Secreto</div>
+            <div class="love-button" onclick="openModal('carta5')">✨ Promesa Eternal</div>
+            <div class="love-button" onclick="openModal('carta6')">💖 Susurros del Corazón</div>
+        </div>
+
+        <div class="love-images">
+            <img src="Imagenes/1.jpg" alt="Momento especial 1" class="love-image">
+            <img src="Imagenes/4.jpg" alt="Momento especial 4" class="love-image">
+            <img src="Imagenes/2.jpg" alt="Momento especial 5" class="love-image">
+            <img src="Imagenes/3.jpg" alt="Momento especial 3" class="love-image">
+            <img src="Imagenes/5.jpg" alt="Momento especial 2" class="love-image">
+            <img src="Imagenes/6.jpg" alt="Momento especial 6" class="love-image">
+
+        </div>
+    </div>
+
+    <div id="carta1" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('carta1')">&times;</span>
+            <h2>Carta de Amor 1💌</h2>
+            <p>Mi amor</p>
+            <p>Quiero que sepas todo el amor que siento por ti , se que no existen palabras para describir todo el amor que siento por ti
+                por eso siempre eh tratado de demostrartelos con hechos, una vez te dije que haria hasta lo imposible por siempre estar
+                a tu lado y eso seguire haciendo, no ah sido facil pero ambos estamos luchando por nuestro amor y eso me encanta, Gracias por
+                hacerme el hombre mas feliz del mundo mi amor, Te amo infinitamente mi jodidita, con mucho cariño de parte de💌</p>
+            <p style="font-family: 'Dancing Script', cursive; font-size: 1.5em;">💌 El Amor De Tu Vida</p>
+
+        </div>
+    </div>
+
+    <div id="carta2" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('carta2')">&times;</span>
+            <h2>Carta de Amor 2💕</h2>
+            <p>Mi persona favorita</p>
+            <p>Quiero que sepas que no solo me enamoré de ti, sino de cada pequeño detalle que te hace única,
+            me enamoro cada día de tu bondad, de tu forma de reír, de cómo me miras.Tu me has enseñado el verdadero 
+            significado del amor: entrega, respeto, complicidad y felicidad.Eres mi hogar, mi paz, mi lugar seguro en este mundo,
+            con todo mi corazón💕</p>
+            <p style="font-family: 'Dancing Script', cursive; font-size: 1.5em;">💕 Tu compañero de vida</p>
+        </div>
+    </div>
+
+    <div id="carta3" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('carta3')">&times;</span>
+            <h2>Carta de Amor 3💘</h2>
+            <p>Mi amor verdadero</p>
+            <p>Tengo miles de recuerdos a tu lado , cada experencia vivida ha sido lo mejor que me paso en mi vida, desde el
+                momento que te saque a bailar, luego decirte para salir en mi cumple, despues siendo el amor de mi vida, el dia
+                que me dijiste que te gustaba la forma en como bailo , mis ojitos se llenaron de alegria porque yo amo la manera
+                en como bailas y somos un complemento hasta en el baile. Jamas dudes del amor que siento por ti mi amor, Este loco
+                haria millones de cosas por ti porque soy💘</p>
+            <p style="font-family: 'Dancing Script', cursive; font-size: 1.5em;">💘 Tu amor incondicional</p>
+        </div>
+    </div>
+
+    <div id="carta4" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('carta4')">&times;</span>
+            <h2>Poema Secreto🌹</h2>
+            <p>En el silencio de la noche,</p>
+            <p>Tus palabras son mi más dulce refugio.</p>
+            <p>Cada suspiro, cada mirada</p>
+            <p>Es un poema que solo nosotros entendemos.</p>
+            <p>Nuestro amor, un secreto</p>
+            <p>Que late entre estrellas y sombras.</p>
+            <p style="font-family: 'Dancing Script', cursive; font-size: 1.5em;">🌹 Con amor infinito</p>
+        </div>
+    </div>
+
+    <div id="carta5" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('carta5')">&times;</span>
+            <h2>Promesa Eterna✨</h2>
+            <p>Prometo amarte:</p>
+            <p>En los días soleados y en las noches más oscuras,</p>
+            <p>En la alegría y en el desafío,</p>
+            <p>Cuando sonríes y cuando lloras,</p>
+            <p>Cada segundo, cada respiro, cada latido.</p>
+            <p>Mi amor no conoce límites.</p>
+            <p style="font-family: 'Dancing Script', cursive; font-size: 1.5em;">✨ Tu compañero de vida</p>
+        </div>
+    </div>
+
+    <div id="carta6" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('carta6')">&times;</span>
+            <h2>Susurros del Corazón💖</h2>
+            <p>Te amo en el silencio de la mañana,</p>
+            <p>En el bullicio de la tarde,</p>
+            <p>En los sueños de la noche.</p>
+            <p>Mi amor por ti es como un susurro</p>
+            <p>Que atraviesa el tiempo y el espacio.</p>
+            <p>Suave, profundo, infinito.</p>
+            <p style="font-family: 'Dancing Script', cursive; font-size: 1.5em;">💖
+        </div>
+    </div>
+
+    <script>
+        function openModal(carta) {
+            document.getElementById(carta).style.display = "flex";
+        }
+        function closeModal(carta) {
+            document.getElementById(carta).style.display = "none";
+        }
+
+        function generateHearts() {
+            for (let i = 0; i < 50; i++) {
+                createHeart();
+                createRosePetal();
+            }
+        }
+
+        function createHeart() {
+            let heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.style.left = `${Math.random() * 100}%`;
+            heart.style.animationDuration = `${Math.random() * 3 + 2}s`;
+            document.getElementById('heart-overlay').appendChild(heart);
+        }
+
+        function createRosePetal() {
+            let rosePetal = document.createElement('div');
+            rosePetal.classList.add('rose-petal');
+            rosePetal.style.left = `${Math.random() * 100}%`;
+            rosePetal.style.animationDuration = `${Math.random() * 3 + 2}s`;
+            document.getElementById('rose-overlay').appendChild(rosePetal);
+        }
+
+        generateHearts();
+    </script>
+</body>
+</html>
